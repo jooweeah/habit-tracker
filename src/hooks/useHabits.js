@@ -22,13 +22,18 @@ function calcStreak(completions) {
   return streak;
 }
 
+function parseDateLocal(str) {
+  const [y, m, d] = str.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
 function calcLongestStreak(completions) {
   const keys = Object.keys(completions).sort();
   if (keys.length === 0) return 0;
   let longest = 1;
   let current = 1;
   for (let i = 1; i < keys.length; i++) {
-    const diff = (new Date(keys[i]) - new Date(keys[i - 1])) / 86400000;
+    const diff = (parseDateLocal(keys[i]) - parseDateLocal(keys[i - 1])) / 86400000;
     if (diff === 1) {
       longest = Math.max(longest, ++current);
     } else {
